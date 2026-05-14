@@ -282,9 +282,6 @@ date_diff('day', date(date_trunc('month', "#event_time")), date("#event_time")) 
 -- 生命周期天数
 date_diff('day', date(ta_u."register_time"), date("#event_time"))
 
--- 常数 1 属性
-if("#event_name" is not null, 1, 1)
-
 -- 时区校正（标签时区为 UTC+0 时）
 date_add('hour', 0 - cast("#zone_offset" as int), "#event_time")
 
