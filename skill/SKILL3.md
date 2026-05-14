@@ -65,7 +65,21 @@ description: 在系统中指导用户创建各类累计指标（累计付费金�
    - 若为非今日：取事件时间到 23:00 的整点小时列表
 
    ```sql
-if(date_diff('day',date("#event_time"),date(current_timestamp))=0,reduce(sequence(1,hour(current_timestamp)-hour("#event_time")+1),array[],(s,x)->s||date_format(date_add('hour',x-1,"#event_time"),'%H:00:00'),s->s),reduce(sequence(1,24-hour("#event_time")),array[],(s,x)->s||date_format(date_add('hour',x-1,"#event_time"),'%H:00:00'),s->s))
+   if(
+     date_diff('day', date("#event_time"), date(current_timestamp)) = 0,
+     reduce(
+       sequence(1, hour(current_timestamp) - hour("#event_time") + 1),
+       array[],
+       (s, x) -> s || date_format(date_add('hour', x - 1, "#event_time"), '%H:00:00'),
+       s -> s
+     ),
+     reduce(
+       sequence(1, 24 - hour("#event_time")),
+       array[],
+       (s, x) -> s || date_format(date_add('hour', x - 1, "#event_time"), '%H:00:00'),
+       s -> s
+     )
+   )
    ```
 
 2. **在事件分析模型中构建指标**：
